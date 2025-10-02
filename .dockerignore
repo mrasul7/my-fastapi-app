@@ -1,0 +1,24 @@
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+.env
+.venv
+venv/
+.idea
+.git
+.gitignore
+.DS_Store
+*.log
+*.sqlite3
+.coverage
+.pytest_cache
+.mypy_cache
+Dockerfile*
+.dockerignore
+docker-compose*.yml
+
+# uv специфичные
+.uv/
+__pypackages__/

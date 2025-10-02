@@ -1,0 +1,36 @@
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: BotDataBase
+      POSTGRES_USER: bot_user
+      POSTGRES_PASSWORD: bot_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  bot:
+    build:
+      context: .
+      dockerfile: bot.dockerfile
+    depends_on:
+      - db
+    environment:
+      - BOT_TOKEN=${BOT_TOKEN}
+      - DATABASE_URL=postgresql+asyncpg://tgbot:bot_qrt2503@db:5432/botdatabase
+
+  api:
+    build:
+      context: .
+      dockerfile: api.dockerfile
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    environment:
+      - API_TOKEN=${API_TOKEN}
+      - DATABASE_URL=postgresql+asyncpg://tgbot:bot_qrt2503@db:5432/botdatabase
+
+volumes:
+  postgres_data:
