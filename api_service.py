@@ -15,4 +15,4 @@ if __name__ == "__main__":
             port=8000
         )
     except KeyboardInterrupt:
-        api_logger.info('Exit')
+        api_logger.info('Выход')

@@ -2,21 +2,34 @@ services:
   db:
     image: postgres:15
     environment:
-      POSTGRES_DB: BotDataBase
-      POSTGRES_USER: bot_user
-      POSTGRES_PASSWORD: bot_password
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_PASSWORD} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "5433:5432"
 
   bot:
     build:
       context: .
       dockerfile: bot.dockerfile
+    
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
+      - API_TOKEN=${API_TOKEN}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=localhost
+      - DB_PORT=5432
+      - DB_NAME=${DB_NAME}
       - BOT_TOKEN=${BOT_TOKEN}
       - DATABASE_URL=postgresql+asyncpg://tgbot:bot_qrt2503@db:5432/botdatabase
 
@@ -25,11 +38,18 @@ services:
       context: .
       dockerfile: api.dockerfile
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     ports:
       - "8000:8000"
     environment:
       - API_TOKEN=${API_TOKEN}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=localhost
+      - DB_PORT=5432
+      - DB_NAME=${DB_NAME}
+      - BOT_TOKEN=${BOT_TOKEN}
       - DATABASE_URL=postgresql+asyncpg://tgbot:bot_qrt2503@db:5432/botdatabase
 
 volumes:

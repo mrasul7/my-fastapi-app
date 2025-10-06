@@ -18,7 +18,5 @@ venv/
 Dockerfile*
 .dockerignore
 docker-compose*.yml
-
-# uv специфичные
 .uv/
 __pypackages__/

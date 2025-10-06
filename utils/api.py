@@ -6,12 +6,12 @@ async def verify_api_token(token: str = Header(..., alias="X-API-Token")) -> boo
     if not token:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="API token is required"
+            detail="Необходимо ввести API токен"
         )
     if not compare_digest(token, settings.API_TOKEN):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid API token"
+            detail="Невалидный API токен"
         )
     
     return True

@@ -1,5 +1,13 @@
+from logging import (
+    Logger, 
+    getLogger, 
+    Formatter, 
+    StreamHandler, 
+    INFO
+)
+
 import logging
-from logging import Logger, getLogger, Formatter, StreamHandler, INFO
+
 
 
 def setting_logger(logger: Logger) -> Logger:
