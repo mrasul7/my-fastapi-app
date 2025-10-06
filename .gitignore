@@ -4,6 +4,7 @@ uv.lock
 venv/
 env/
 .venv*/
+.env
 
 # Python общие правила
 __pycache__/
